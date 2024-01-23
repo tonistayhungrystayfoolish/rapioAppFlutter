@@ -4,8 +4,8 @@ import 'package:music_radio_toni/model/radio_channel.dart';
 import 'package:music_radio_toni/views/screens/radio_list_screen.dart';
 import 'package:music_radio_toni/views/screens/radio_player_screen.dart';
 
-import 'bloc/radio_list_bloc/radio_bloc.dart';
-import 'bloc/radio_player_bloc/radio_player_bloc.dart';
+import '../bloc/radio_list_bloc/radio_bloc.dart';
+import '../bloc/radio_player_bloc/radio_player_bloc.dart';
 
 class RouteGenerator {
   Route<dynamic> generateRoute(RouteSettings settings) {

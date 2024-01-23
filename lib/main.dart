@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_radio_toni/routes.dart';
+import 'package:music_radio_toni/routes/routes.dart';
 import 'package:music_radio_toni/views/screens/radio_list_screen.dart';
 
 var kColorScheme =

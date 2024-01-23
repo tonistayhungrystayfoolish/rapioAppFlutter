@@ -47,6 +47,6 @@ Screenshots
 
 ![Screenshot_20240123_202604.png](Screenshot_20240123_202604.png)
 
-![img.png](img.png)
+![img.png](Screenshot_20240123_202608.png)
 
-![img_1.png](img_1.png)
+![img_1.png](Screenshot_20240123_2026012.png)
