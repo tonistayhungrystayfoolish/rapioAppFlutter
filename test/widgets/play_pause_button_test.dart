@@ -5,13 +5,11 @@ import 'package:music_radio_toni/views/widgets/play_pause_button.dart';
 void main() {
   group('PlayPauseButton', () {
     testWidgets('displays play icon when isPlaying is false', (tester) async {
-      bool wasPressed = false;
-
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: PlayPauseButton(
-              onPressed: () => wasPressed = true,
+              onPressed: () {},
               isPlaying: false,
             ),
           ),

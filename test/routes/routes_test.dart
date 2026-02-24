@@ -14,7 +14,7 @@ void main() {
     });
 
     test('generateRoute returns MaterialPageRoute for RadioListScreen', () {
-      final settings = const RouteSettings(name: RadioListScreen.id);
+      const settings = RouteSettings(name: RadioListScreen.id);
       final route = routeGenerator.generateRoute(settings);
 
       expect(route, isA<MaterialPageRoute>());
