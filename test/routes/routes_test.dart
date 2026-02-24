@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:music_radio_toni/bloc/radio_list_bloc/radio_bloc.dart';
+import 'package:music_radio_toni/bloc/radio_player_bloc/radio_player_bloc.dart';
 import 'package:music_radio_toni/model/radio_channel.dart';
 import 'package:music_radio_toni/routes/routes.dart';
 import 'package:music_radio_toni/views/screens/radio_list_screen.dart';
@@ -77,37 +80,18 @@ void main() {
       expect(route, isA<MaterialPageRoute>());
     });
 
-    test('_errorRoute returns MaterialPageRoute with error Scaffold', () {
-      final route = RouteGenerator._errorRoute() as MaterialPageRoute;
+    test('generateRoute for RadioListScreen contains RadioListScreen widget',
+        () {
+      const settings = RouteSettings(name: RadioListScreen.id);
+      final route = routeGenerator.generateRoute(settings) as MaterialPageRoute;
 
-      expect(route, isA<MaterialPageRoute>());
-      expect(route.builder, isNotNull);
+      final widget = route.builder(_createMockContext());
+      expect(widget, isA<BlocProvider<RadioListBloc>>());
     });
 
-    test('_errorRoute contains Error title in AppBar', () {
-      final route = RouteGenerator._errorRoute() as MaterialPageRoute;
-      final errorWidget = route.builder(MockBuildContext());
-
-      expect(errorWidget, isA<Scaffold>());
-      final scaffold = errorWidget as Scaffold;
-      expect(scaffold.appBar, isA<AppBar>());
-      expect((scaffold.appBar as AppBar).title, isA<Text>());
-      expect(((scaffold.appBar as AppBar).title as Text).data, 'Error');
-    });
-
-    test('_errorRoute contains error message in body', () {
-      final route = RouteGenerator._errorRoute() as MaterialPageRoute;
-      final errorWidget = route.builder(MockBuildContext());
-
-      expect(errorWidget, isA<Scaffold>());
-      final scaffold = errorWidget as Scaffold;
-      expect(scaffold.body, isA<Center>());
-      final center = scaffold.body as Center;
-      expect(center.child, isA<Text>());
-      expect((center.child as Text).data, 'Error while loading new page');
-    });
-
-    test('generateRoute uses settings.arguments for RadioPlayerScreen', () {
+    test(
+        'generateRoute for RadioPlayerScreen creates RadioPlayerBloc with audioSource',
+        () {
       final radioChannel = RadioChannel(
         id: 'test-id',
         title: 'Test Radio',
@@ -118,19 +102,30 @@ void main() {
         name: RadioPlayerScreen.id,
         arguments: radioChannel,
       );
-
       final route = routeGenerator.generateRoute(settings) as MaterialPageRoute;
-      final builderResult = route.builder(MockBuildContext(), null);
 
-      expect(builderResult, isA<BlocProvider<RadioPlayerBloc>>());
+      final widget = route.builder(_createMockContext());
+      expect(widget, isA<BlocProvider<RadioPlayerBloc>>());
     });
 
-    test('generateRoute for RadioListScreen creates RadioListBloc', () {
-      const settings = RouteSettings(name: RadioListScreen.id);
+    test('generateRoute for unknown route shows error Scaffold', () {
+      const settings = RouteSettings(name: '/unknown');
       final route = routeGenerator.generateRoute(settings) as MaterialPageRoute;
-      final builderResult = route.builder(MockBuildContext(), null);
 
-      expect(builderResult, isA<BlocProvider<RadioListBloc>>());
+      final scaffold = route.builder(_createMockContext()) as Scaffold;
+      expect(scaffold.appBar, isA<AppBar>());
+      expect((scaffold.appBar as AppBar).title, isA<Text>());
+      expect(((scaffold.appBar as AppBar).title as Text).data, 'Error');
+    });
+
+    test('generateRoute for unknown route shows error message', () {
+      const settings = RouteSettings(name: '/unknown');
+      final route = routeGenerator.generateRoute(settings) as MaterialPageRoute;
+
+      final scaffold = route.builder(_createMockContext()) as Scaffold;
+      final center = scaffold.body as Center;
+      final text = center.child as Text;
+      expect(text.data, 'Error while loading new page');
     });
   });
 
@@ -145,7 +140,11 @@ void main() {
   });
 }
 
-class MockBuildContext implements BuildContext {
+BuildContext _createMockContext() {
+  return _MockBuildContext();
+}
+
+class _MockBuildContext implements BuildContext {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
