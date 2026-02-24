@@ -6,13 +6,14 @@ import 'package:music_radio_toni/bloc/radio_player_bloc/radio_player_event.dart'
 import 'package:music_radio_toni/bloc/radio_player_bloc/radio_player_state.dart';
 
 class RadioPlayerBloc extends Bloc<RadioPlayerEvent, RadioPlayerState> {
-  late AudioPlayer _audioPlayer;
+  AudioPlayer? _audioPlayer;
   bool _isPlaying = false;
   bool _isFavorite = false;
 
-  RadioPlayerBloc({required String audioSource}) : super(RadioPlayerInitial()) {
-    _audioPlayer = AudioPlayer();
-    _audioPlayer.setSourceUrl(audioSource);
+  RadioPlayerBloc({required String audioSource, AudioPlayer? audioPlayer})
+      : super(RadioPlayerInitial()) {
+    _audioPlayer = audioPlayer ?? AudioPlayer();
+    _audioPlayer?.setSourceUrl(audioSource);
     on<PlayPauseEvent>(_togglePlayPause);
     on<ToggleFavoriteEvent>(_toggleFavorite);
   }
@@ -21,10 +22,10 @@ class RadioPlayerBloc extends Bloc<RadioPlayerEvent, RadioPlayerState> {
       PlayPauseEvent event, Emitter<RadioPlayerState> emit) async {
     _isPlaying = !_isPlaying;
     if (_isPlaying) {
-      _audioPlayer.resume();
+      _audioPlayer?.resume();
       emit(RadioPlayerPlaying());
     } else {
-      _audioPlayer.pause();
+      _audioPlayer?.pause();
       emit(RadioPlayerPaused());
     }
   }
@@ -37,7 +38,7 @@ class RadioPlayerBloc extends Bloc<RadioPlayerEvent, RadioPlayerState> {
 
   @override
   Future<void> close() async {
-    await _audioPlayer.dispose();
+    await _audioPlayer?.dispose();
     await super.close();
   }
 }
