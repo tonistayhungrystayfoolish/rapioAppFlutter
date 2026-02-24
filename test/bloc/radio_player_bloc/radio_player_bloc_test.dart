@@ -184,5 +184,27 @@ void main() {
         isA<RadioPlayerPlaying>(),
       ],
     );
+
+    blocTest<RadioPlayerBloc, RadioPlayerState>(
+      'RadioPlayerError has correct props',
+      build: () => RadioPlayerBloc(
+        audioSource: 'https://test-stream.com/stream.m3u8',
+        audioPlayer: mockAudioPlayer,
+      ),
+      verify: (_) {
+        final state = RadioPlayerError();
+        expect(state.props, isEmpty);
+      },
+    );
+
+    test('RadioPlayerBloc close disposes audio player', () async {
+      when(() => mockAudioPlayer.dispose()).thenAnswer((_) async {});
+      final bloc = RadioPlayerBloc(
+        audioSource: 'https://test-stream.com/stream.m3u8',
+        audioPlayer: mockAudioPlayer,
+      );
+      await bloc.close();
+      verify(() => mockAudioPlayer.dispose()).called(1);
+    });
   });
 }
