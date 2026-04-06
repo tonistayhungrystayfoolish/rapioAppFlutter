@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: kDarkColorScheme,
-        cardTheme: const CardTheme().copyWith(
+        cardTheme: const CardThemeData().copyWith(
           color: kDarkColorScheme.secondaryContainer,
           margin: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: kColorScheme.onPrimaryContainer,
             foregroundColor: kColorScheme.primaryContainer,
             titleTextStyle: const TextStyle().copyWith(fontSize: 20)),
-        cardTheme: const CardTheme().copyWith(
+        cardTheme: const CardThemeData().copyWith(
           color: kColorScheme.secondaryContainer,
           margin: const EdgeInsets.symmetric(
             horizontal: 16,
